@@ -39,7 +39,7 @@ class Tache extends Model
 
     public function assignedMembers(): BelongsToMany
     {
-        return $this->belongsToMany(Membre::class, 'membre_taches')->withTimestamps();
+        return $this->belongsToMany(Membre::class, 'membre_taches', 'task_id', 'member_id')->withTimestamps();
     }
 
     public function isOverdue(): bool

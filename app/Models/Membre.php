@@ -40,7 +40,7 @@ class Membre extends Model
 
     public function assignedTasks(): BelongsToMany
     {
-        return $this->belongsToMany(Tache::class, 'membre_taches')->withTimestamps();
+        return $this->belongsToMany(Tache::class, 'membre_taches', 'member_id', 'task_id')->withTimestamps();
     }
 
     public function isManager(): bool

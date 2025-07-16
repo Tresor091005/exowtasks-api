@@ -21,6 +21,8 @@ class EquipeResource extends JsonResource
             'slug' => $this->slug,
             'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at?->format('Y-m-d H:i:s'),
+
+            // Relations
             'membres' => MembreResource::collection($this->whenLoaded('membres')),
         ];
     }

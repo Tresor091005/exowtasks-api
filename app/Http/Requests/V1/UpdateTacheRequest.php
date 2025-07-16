@@ -16,11 +16,6 @@ class UpdateTacheRequest extends FormRequest
         $tache = $this->route('task');
         $authenticatedUser = auth()->user();
 
-        // Vérifier si l'utilisateur est authentifié
-        if (!$authenticatedUser) {
-            return false;
-        }
-
         // Vérifier si l'utilisateur est le créateur de la tâche
         if ($tache->created_by === $authenticatedUser->id) {
             return true;

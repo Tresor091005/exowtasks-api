@@ -4,33 +4,39 @@ namespace App\Models;
 
 use App\Enums\MembreRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Sanctum\HasApiTokens;
 
-class Membre extends Model
+class Membre extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory;
 
     protected $fillable = [
         'first_name',
         'last_name',
         'email',
+        'password',
         'role',
         'team_id',
         'joined_at',
     ];
 
+    protected $hidden = ['password', 'remember_token'];
+
     protected $casts = [
+        'email_verified_at' => 'datetime',
         'joined_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'team_id' => 'integer',
     ];
 
     public function equipe(): BelongsTo
     {
-        return $this->belongsTo(Equipe::class);
+        return $this->belongsTo(Equipe::class, 'team_id');
     }
 
     public function createdTasks(): HasMany

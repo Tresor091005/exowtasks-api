@@ -20,13 +20,6 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        // utilisateur de développement
-        $user = User::factory()->create([
-            'name' => 'Administrateur',
-            'email' => 'admin@exowtasks.com',
-            'password' => Hash::make('password'),
-        ]);
-
         // équipes
         $equipeA = Equipe::factory()->create([
             'name' => 'Equipe A',

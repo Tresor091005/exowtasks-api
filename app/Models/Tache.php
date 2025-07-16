@@ -24,12 +24,7 @@ class Tache extends Model
         'due_date' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-    ];
-
-    const STATUSES = [
-        'todo',
-        'in_progress',
-        'done',
+        'created_by' => 'integer',
     ];
 
     public function creator(): BelongsTo

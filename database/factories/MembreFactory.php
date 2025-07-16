@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Enums\MembreRole;
 use App\Models\Equipe;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Membre>
@@ -22,6 +23,7 @@ class MembreFactory extends Factory
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
+            'password' => Hash::make('password'),
             'role' => fake()->randomElement([
                 MembreRole::DEVELOPER->value,
                 MembreRole::DESIGNER->value,

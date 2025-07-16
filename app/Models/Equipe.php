@@ -40,6 +40,6 @@ class Equipe extends Model
 
     public function membres(): HasMany
     {
-        return $this->hasMany(Membre::class);
+        return $this->hasMany(Membre::class, 'team_id');
     }
 }

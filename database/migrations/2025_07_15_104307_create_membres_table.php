@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->enum('role', ['manager', 'developer', 'designer', 'tester']);
             $table->foreignId('team_id')->constrained('equipes')->onDelete('cascade');
-            $table->timestamp('joined_at');
+            $table->timestamp('joined_at')->nullable();
             $table->timestamps();
         });
     }

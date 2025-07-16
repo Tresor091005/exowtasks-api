@@ -18,6 +18,8 @@ class MembreTache extends Model
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'member_id' => 'integer',
+        'task_id' => 'integer',
     ];
 
     public function tache(): BelongsTo

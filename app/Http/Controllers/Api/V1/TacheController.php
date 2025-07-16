@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseController;
+use App\Http\Requests\V1\AssignTacheRequest;
 use App\Http\Requests\V1\StoreTacheRequest;
 use App\Http\Requests\V1\UpdateTacheRequest;
 use App\Http\Resources\V1\TacheResource;
@@ -64,10 +65,6 @@ class TacheController extends BaseController
      */
     public function update(UpdateTacheRequest $request, Tache $task): JsonResponse
     {
-        // TODO: autorisation manager - connexion membre
-        // Vérifier si l'utilisateur peut modifier cette tâche
-        // $this->authorize('update', $task);
-
         $task = $this->TacheService->updateTache($task, $request->validated());
 
         return $this->successResponse(
@@ -81,9 +78,6 @@ class TacheController extends BaseController
      */
     public function destroy(Tache $task): JsonResponse
     {
-        // Vérifier si l'utilisateur peut supprimer cette tâche
-        // $this->authorize('delete', $task);
-
         $this->TacheService->deleteTache($task);
 
         return $this->deletedResponse('Tâche supprimée avec succès');
@@ -92,26 +86,26 @@ class TacheController extends BaseController
     /**
      * Assigne des membres à une tâche
      */
-    // public function assign(AssignTacheRequest $request, Tache $task): JsonResponse
-    // {
-    //     $this->TacheService->assignMembers($task, $request->validated()['member_ids']);
+    public function assign(AssignTacheRequest $request, Tache $task): JsonResponse
+    {
+        $this->TacheService->assignMembers($task, $request->validated()['member_ids']);
 
-    //     return $this->successResponse(
-    //         new TacheResource($task->fresh(['assignedMembers'])),
-    //         'Members assigned to Tache successfully'
-    //     );
-    // }
+        return $this->successResponse(
+            new TacheResource($task->fresh(['assignedMembers'])),
+            'Membres assignés à la tâche avec succès'
+        );
+    }
 
     /**
      * Désassigne des membres d'une tâche
      */
-    // public function unassign(AssignTacheRequest $request, Tache $task): JsonResponse
-    // {
-    //     $this->TacheService->unassignMembers($task, $request->validated()['member_ids']);
+    public function unassign(AssignTacheRequest $request, Tache $task): JsonResponse
+    {
+        $this->TacheService->unassignMembers($task, $request->validated()['member_ids']);
 
-    //     return $this->successResponse(
-    //         new TacheResource($task->fresh(['assignedMembers'])),
-    //         'Members unassigned from Tache successfully'
-    //     );
-    // }
+        return $this->successResponse(
+            new TacheResource($task->fresh(['assignedMembers'])),
+            'Membres désassignés à la tâche avec succès'
+        );
+    }
 }

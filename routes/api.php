@@ -24,15 +24,12 @@ Route::prefix('v1')->group(function () {
 
         Route::get('members', [MembreController::class, 'index']);
         Route::get('members/{member}', [MembreController::class, 'show']);
-        Route::put('members/{member}', [MembreController::class, 'update']);
 
+        Route::put('members/{member}', [MembreController::class, 'update']); // spécifique au membre
 
         Route::get('tasks', [TacheController::class, 'index']);
         Route::get('tasks/{task}', [TacheController::class, 'show']);
-        Route::put('tasks/{task}', [TacheController::class, 'update']);
-
-        // Route::post('tasks/{task}/assign', [TacheController::class, 'assign']); // Assigner des membres
-        // Route::delete('tasks/{task}/unassign', [TacheController::class, 'unassign']); // Désassigner des membres
+        Route::put('tasks/{task}', [TacheController::class, 'update']); // membres assignés et créateur
 
         // Routes réservées aux managers
         Route::middleware('check.manager')->group(function () {
@@ -45,6 +42,12 @@ Route::prefix('v1')->group(function () {
 
             Route::post('tasks', [TacheController::class, 'store']);
             Route::delete('tasks/{task}', [TacheController::class, 'destroy']);
+
+            Route::post('tasks/{task}/assign', [TacheController::class, 'assign']);
+            Route::delete('tasks/{task}/unassign', [TacheController::class, 'unassign']);
         });
     });
 });
+
+// NOTE : Les managers peuvent altérer les informations d'une autre Equipe
+// Tout le monde peut voir les tâches des autres teams

@@ -13,7 +13,11 @@ class UpdateMembreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        // Vérifier que l'utilisateur connecté est bien le membre qu'il veut modifier
+        $membreToUpdate = $this->route('member');
+        $authenticatedUser = auth()->user();
+
+        return $authenticatedUser && $authenticatedUser->id === $membreToUpdate->id;
     }
 
     /**

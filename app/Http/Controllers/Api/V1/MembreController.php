@@ -65,10 +65,6 @@ class MembreController extends BaseController
      */
     public function update(UpdateMembreRequest $request, Membre $member): JsonResponse
     {
-        // TODO: autorisation manager - connexion membre
-        // Vérifier si l'utilisateur peut modifier ce membre
-        // $this->authorize('update', $member);
-
         $member = $this->membreService->updateMembre($member, $request->validated());
 
         return $this->successResponse(
@@ -82,9 +78,6 @@ class MembreController extends BaseController
      */
     public function destroy(Membre $member): JsonResponse
     {
-        // Vérifier si l'utilisateur peut supprimer ce membre
-        // $this->authorize('delete', $member);
-
         $this->membreService->deleteMembre($member);
 
         return $this->deletedResponse('Membre supprimé avec succès');

@@ -13,7 +13,23 @@ class UpdateTacheRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $tache = $this->route('task');
+        $authenticatedUser = auth()->user();
+
+        // Vérifier si l'utilisateur est authentifié
+        if (!$authenticatedUser) {
+            return false;
+        }
+
+        // Vérifier si l'utilisateur est le créateur de la tâche
+        if ($tache->created_by === $authenticatedUser->id) {
+            return true;
+        }
+
+        // Vérifier si l'utilisateur est assigné à la tâche
+        $isAssigned = $tache->assignedMembers()->where('member_id', $authenticatedUser->id)->exists();
+
+        return $isAssigned;
     }
 
     /**

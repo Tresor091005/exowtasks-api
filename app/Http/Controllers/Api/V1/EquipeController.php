@@ -92,6 +92,8 @@ class EquipeController extends BaseController
 
             DB::commit();
 
+            return $this->deletedResponse('Équipe supprimée avec succès');
+
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -101,7 +103,5 @@ class EquipeController extends BaseController
                 $e->getMessage()
             );
         }
-
-        return $this->deletedResponse('Équipe supprimée avec succès');
     }
 }

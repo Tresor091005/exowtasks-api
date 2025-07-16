@@ -1,0 +1,898 @@
+{
+	"info": {
+		"_postman_id": "202ee86a-ecaf-4622-8b26-6af4277b4a44",
+		"name": "ExowTasks",
+		"description": "API pour la gestion des tâches, équipes et membres",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40849959"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Se connecter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.token) {",
+									"        pm.collectionVariables.set('token', response.token);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"rodrigue.agossou@gmail.com\",\n    \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Infos utilisateur",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Se déconnecter",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teams",
+			"item": [
+				{
+					"name": "Liste des Équipes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/teams",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"teams"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "",
+									"description": "Filtrer par nom d'équipe",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Créer Équipe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Mon équipe\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/teams",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"teams"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Afficher Équipe",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/teams/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"teams",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mettre à jour Équipe",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nouveau nom d'équipe\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/teams/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"teams",
+								"3"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supprimer Équipe",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/teams/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"teams",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Members",
+			"item": [
+				{
+					"name": "Liste des Membres",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/members",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "",
+									"description": "Filtrer par rôle",
+									"disabled": true
+								},
+								{
+									"key": "team_id",
+									"value": "",
+									"description": "Filtrer par équipe",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "",
+									"description": "Filtrer par nom ou prénom",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "",
+									"description": "Filtrer par email",
+									"disabled": true
+								},
+								{
+									"key": "joined_before",
+									"value": "",
+									"description": "Membres rejoints avant cette date",
+									"disabled": true
+								},
+								{
+									"key": "joined_after",
+									"value": "2025-01-01",
+									"description": "Membres rejoints après cette date",
+									"disabled": true
+								},
+								{
+									"key": "joined_at",
+									"value": "",
+									"description": "Membres rejoints à cette date",
+									"disabled": true
+								},
+								{
+									"key": "sort_by",
+									"value": "first_name",
+									"description": "Colonne de tri",
+									"disabled": true
+								},
+								{
+									"key": "sort_direction",
+									"value": "asc",
+									"description": "Direction: asc, desc",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Créer Membre",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Happy\",\n    \"last_name\": \"Lala\",\n    \"email\": \"happy.lala@gmail.com\",\n    \"role\": \"developer\",\n    \"team_id\": 2\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/members",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members"
+							],
+							"query": [
+								{
+									"key": "first_name",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "last_name",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "role",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "team_id",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "joined_at",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Afficher Membre",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/members/13",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members",
+								"13"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mettre à jour Membre",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Happy\",\n    \"last_name\": \"Lala\",\n    \"email\": \"happy.lala@gmail.com\",\n    \"password\": \"happiness\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/members/13",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members",
+								"13"
+							],
+							"query": [
+								{
+									"key": "first_name",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "last_name",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supprimer Membre",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/members/13",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members",
+								"13"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "Liste des Tâches",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "",
+									"description": "Filtrer par statut: todo, in_progress, done",
+									"disabled": true
+								},
+								{
+									"key": "member_id",
+									"value": "",
+									"description": "Filtrer par membre assigné",
+									"disabled": true
+								},
+								{
+									"key": "due_date",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "due_before",
+									"value": "",
+									"description": "Tâches dues avant cette date",
+									"disabled": true
+								},
+								{
+									"key": "due_after",
+									"value": "",
+									"description": "Tâches dues après cette date",
+									"disabled": true
+								},
+								{
+									"key": "sort_by",
+									"value": "",
+									"description": "Trier par: title, due_date, status",
+									"disabled": true
+								},
+								{
+									"key": "sort_direction",
+									"value": "",
+									"description": "Direction: asc, desc",
+									"disabled": true
+								},
+								{
+									"key": "created_by",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Afficher Tâche",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/tasks/9",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tasks",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Créer Tâche",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Créer une tâche\",\n    \"description\": \"Description de la tâche\",\n    \"status\": \"todo\",\n    \"created_by\": 1,\n    \"assigned_members\": [1, 2, 3],\n    \"due_date\": \"2025-08-05\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "due_date",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "created_by",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "assigned_members[]",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "assigned_members[]",
+									"value": "3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mettre à jour Tâche",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Titre modifié\",\n    \"description\": \"Autre description\",\n    \"status\": \"in_progress\",\n    \"due_date\": \"2025-08-01\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/tasks/15",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tasks",
+								"15"
+							],
+							"query": [
+								{
+									"key": "description",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "due_date",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supprimer Tâche",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/tasks/15",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tasks",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assigner Membre à une Tâche",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"member_ids\": [1, 3]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/tasks/2/assign",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tasks",
+								"2",
+								"assign"
+							],
+							"query": [
+								{
+									"key": "member_ids[]",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Désassigner Membre à Tâche",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"member_ids\": [1, 3]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/tasks/2/unassign",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tasks",
+								"2",
+								"unassign"
+							],
+							"query": [
+								{
+									"key": "member_ids[]",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "127.0.0.1:8000",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

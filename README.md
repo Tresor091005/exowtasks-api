@@ -76,6 +76,7 @@ CREATE DATABASE exowtasks;
 CREATE USER votre_username WITH PASSWORD 'votre_password';
 
 GRANT ALL PRIVILEGES ON DATABASE exowtasks TO votre_username;
+ALTER DATABASE exowtasks OWNER TO votre_username;
 ```
 
 ### 2. Exécuter les migrations et remplir avec des données de test

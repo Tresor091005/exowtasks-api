@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Equipe;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\EquipeController;
 use App\Http\Controllers\Api\V1\MembreController;
@@ -19,7 +20,7 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
 
         // Routes pour tous les membres
-        Route::get('teams', [EquipeController::class, 'index']);
+        Route::get('teams', [EquipeController::class, 'index'])->middleware('can:viewAny,'.Equipe::class);
         Route::get('teams/{team}', [EquipeController::class, 'show']);
 
         Route::get('members', [MembreController::class, 'index']);

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\MembreRole;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,6 +34,13 @@ class Membre extends Authenticatable
         'updated_at' => 'datetime',
         'team_id' => 'integer',
     ];
+
+    protected function fullName(): Attribute 
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => ucfirst($attributes['first_name']) . ' ' . ucfirst($attributes['last_name']),
+        );
+    }
 
     public function equipe(): BelongsTo
     {

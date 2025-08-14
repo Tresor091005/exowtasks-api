@@ -19,8 +19,8 @@ class EquipeResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
-            'updated_at' => $this->updated_at?->format('Y-m-d H:i:s'),
+            'created_at' => (int) $this->created_at,
+            'updated_at' => (int) $this->updated_at,
 
             // Relations
             'membres' => MembreResource::collection($this->whenLoaded('membres')),

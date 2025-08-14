@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\TimestampCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,8 +18,8 @@ class Equipe extends Model
     ];
 
     protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+        'created_at' => TimestampCast::class,
+        'updated_at' => TimestampCast::class,
     ];
 
     protected static function boot()

@@ -100,7 +100,7 @@ class EquipeController extends BaseController
             return $this->errorResponse(
                 'Erreur lors de la suppression de l\'équipe',
                 500,
-                $e->getMessage()
+                ['d' => $e->getMessage(), 'tag' => ['d', 'dff', 'ffdf']]
             );
         }
     }

@@ -30,7 +30,7 @@ class BaseController extends Controller
         ];
 
         if ($errors) {
-            $response['errors'] = $errors;
+            $response = array_merge($response, ['errors' => $errors]);
         }
 
         return response()->json($response, $status);

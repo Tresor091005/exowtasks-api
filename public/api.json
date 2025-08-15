@@ -1,0 +1,1712 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "ExowTasks API",
+        "version": "0.0.1",
+        "description": "This is my **API** description (writed by Happiness)"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api/v1"
+        }
+    ],
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "operationId": "auth.login",
+                "summary": "Connexion utilisateur",
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "email",
+                                    "password"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "Connexion r\u00e9ussie"
+                                            ]
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "user": {
+                                                    "type": "string"
+                                                },
+                                                "token": {
+                                                    "type": "string"
+                                                },
+                                                "token_type": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "Bearer"
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "user",
+                                                "token",
+                                                "token_type"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "operationId": "auth.logout",
+                "summary": "D\u00e9connexion utilisateur",
+                "tags": [
+                    "Auth"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "D\u00e9connexion r\u00e9ussie"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/auth/user": {
+            "get": {
+                "operationId": "auth.user",
+                "summary": "R\u00e9cup\u00e9rer les informations de l'utilisateur connect\u00e9",
+                "tags": [
+                    "Auth"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "Utilisateur r\u00e9cup\u00e9r\u00e9 avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "user": {
+                                                    "$ref": "#/components/schemas/MembreResource"
+                                                }
+                                            },
+                                            "required": [
+                                                "user"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/teams": {
+            "get": {
+                "operationId": "equipe.index",
+                "summary": "Affiche la liste des \u00e9quipes",
+                "tags": [
+                    "Equipe"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "\u00c9quipes r\u00e9cup\u00e9r\u00e9es avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/EquipeResource"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "equipe.store",
+                "summary": "Cr\u00e9e une nouvelle \u00e9quipe",
+                "tags": [
+                    "Equipe"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreEquipeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "\u00c9quipe cr\u00e9\u00e9e avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/EquipeResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/teams/{team}": {
+            "get": {
+                "operationId": "equipe.show",
+                "summary": "Affiche une \u00e9quipe sp\u00e9cifique",
+                "tags": [
+                    "Equipe"
+                ],
+                "parameters": [
+                    {
+                        "name": "team",
+                        "in": "path",
+                        "required": true,
+                        "description": "The team ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "\u00c9quipe r\u00e9cup\u00e9r\u00e9e avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/EquipeResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "put": {
+                "operationId": "equipe.update",
+                "summary": "Met \u00e0 jour une \u00e9quipe",
+                "tags": [
+                    "Equipe"
+                ],
+                "parameters": [
+                    {
+                        "name": "team",
+                        "in": "path",
+                        "required": true,
+                        "description": "The team ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateEquipeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "\u00c9quipe mise \u00e0 jour avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/EquipeResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "equipe.destroy",
+                "summary": "Supprime une \u00e9quipe avec toutes ses donn\u00e9es associ\u00e9es",
+                "tags": [
+                    "Equipe"
+                ],
+                "parameters": [
+                    {
+                        "name": "team",
+                        "in": "path",
+                        "required": true,
+                        "description": "The team ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "Erreur lors de la suppression de l'\u00e9quipe"
+                                            ]
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "properties": {
+                                                "d": {
+                                                    "type": "string"
+                                                },
+                                                "tag": {
+                                                    "type": "array",
+                                                    "prefixItems": [
+                                                        {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "d"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "dff"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "ffdf"
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "minItems": 3,
+                                                    "maxItems": 3,
+                                                    "additionalItems": false
+                                                }
+                                            },
+                                            "required": [
+                                                "d",
+                                                "tag"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "errors"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "\u00c9quipe supprim\u00e9e avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "type": "null"
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/members": {
+            "get": {
+                "operationId": "membre.index",
+                "summary": "Affiche la liste des membres avec filtres",
+                "tags": [
+                    "Membre"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "Membres r\u00e9cup\u00e9r\u00e9s avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/MembreResource"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "membre.store",
+                "summary": "Cr\u00e9e un nouveau membre",
+                "tags": [
+                    "Membre"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreMembreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "Membre cr\u00e9\u00e9 avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/MembreResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/members/{member}": {
+            "get": {
+                "operationId": "membre.show",
+                "summary": "Affiche un membre sp\u00e9cifique",
+                "tags": [
+                    "Membre"
+                ],
+                "parameters": [
+                    {
+                        "name": "member",
+                        "in": "path",
+                        "required": true,
+                        "description": "The member ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "Membre r\u00e9cup\u00e9r\u00e9 avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/MembreResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "put": {
+                "operationId": "membre.update",
+                "summary": "Met \u00e0 jour un membre",
+                "tags": [
+                    "Membre"
+                ],
+                "parameters": [
+                    {
+                        "name": "member",
+                        "in": "path",
+                        "required": true,
+                        "description": "The member ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateMembreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "Membre mis \u00e0 jour avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/MembreResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AuthorizationException"
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "membre.destroy",
+                "summary": "Supprime un membre",
+                "tags": [
+                    "Membre"
+                ],
+                "parameters": [
+                    {
+                        "name": "member",
+                        "in": "path",
+                        "required": true,
+                        "description": "The member ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "Membre supprim\u00e9 avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "type": "null"
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/tasks": {
+            "get": {
+                "operationId": "tache.index",
+                "summary": "Affiche la liste des t\u00e2ches avec filtres",
+                "tags": [
+                    "Tache"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "T\u00e2ches r\u00e9cup\u00e9r\u00e9es avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/TacheResource"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "tache.store",
+                "summary": "Cr\u00e9e une nouvelle t\u00e2che",
+                "tags": [
+                    "Tache"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreTacheRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "T\u00e2che cr\u00e9\u00e9e avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/TacheResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/tasks/{task}": {
+            "get": {
+                "operationId": "tache.show",
+                "summary": "Affiche une t\u00e2che sp\u00e9cifique",
+                "tags": [
+                    "Tache"
+                ],
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "description": "The task ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "T\u00e2che r\u00e9cup\u00e9r\u00e9e avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/TacheResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "put": {
+                "operationId": "tache.update",
+                "summary": "Met \u00e0 jour une t\u00e2che",
+                "tags": [
+                    "Tache"
+                ],
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "description": "The task ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateTacheRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "T\u00e2che mise \u00e0 jour avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/TacheResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AuthorizationException"
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "tache.destroy",
+                "summary": "Supprime une t\u00e2che",
+                "tags": [
+                    "Tache"
+                ],
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "description": "The task ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "T\u00e2che supprim\u00e9e avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "type": "null"
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/tasks/{task}/assign": {
+            "post": {
+                "operationId": "tache.assign",
+                "summary": "Assigne des membres \u00e0 une t\u00e2che",
+                "tags": [
+                    "Tache"
+                ],
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "description": "The task ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AssignTacheRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "Membres assign\u00e9s \u00e0 la t\u00e2che avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/TacheResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/tasks/{task}/unassign": {
+            "delete": {
+                "operationId": "tache.unassign",
+                "summary": "D\u00e9sassigne des membres d'une t\u00e2che",
+                "tags": [
+                    "Tache"
+                ],
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "description": "The task ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "member_ids[]",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "Membres d\u00e9sassign\u00e9s \u00e0 la t\u00e2che avec succ\u00e8s"
+                                            ]
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/TacheResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "success",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AssignTacheRequest": {
+                "type": "object",
+                "properties": {
+                    "member_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "minItems": 1
+                    }
+                },
+                "required": [
+                    "member_ids"
+                ],
+                "title": "AssignTacheRequest"
+            },
+            "EquipeResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "integer"
+                    },
+                    "updated_at": {
+                        "type": "integer"
+                    },
+                    "membres": {
+                        "type": "array",
+                        "description": "Relations",
+                        "items": {
+                            "$ref": "#/components/schemas/MembreResource"
+                        }
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "slug",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "EquipeResource"
+            },
+            "MembreResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "full_name": {
+                        "type": "string"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    },
+                    "team_id": {
+                        "type": "integer"
+                    },
+                    "joined_at": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    },
+                    "equipe": {
+                        "description": "Relations",
+                        "$ref": "#/components/schemas/EquipeResource"
+                    },
+                    "created_tasks": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TacheResource"
+                        }
+                    },
+                    "assigned_tasks": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TacheResource"
+                        }
+                    }
+                },
+                "required": [
+                    "id",
+                    "full_name",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "role",
+                    "team_id",
+                    "joined_at",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "MembreResource"
+            },
+            "StoreEquipeRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 255
+                    }
+                },
+                "required": [
+                    "name"
+                ],
+                "title": "StoreEquipeRequest"
+            },
+            "StoreMembreRequest": {
+                "type": "object",
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "manager",
+                            "developer",
+                            "designer",
+                            "tester"
+                        ]
+                    },
+                    "team_id": {
+                        "type": "number"
+                    },
+                    "joined_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "role",
+                    "team_id"
+                ],
+                "title": "StoreMembreRequest"
+            },
+            "StoreTacheRequest": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "description": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "due_date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "todo",
+                            "in_progress",
+                            "done"
+                        ]
+                    },
+                    "created_by": {
+                        "type": "integer"
+                    },
+                    "assigned_members": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "required": [
+                    "title",
+                    "due_date",
+                    "status",
+                    "created_by"
+                ],
+                "title": "StoreTacheRequest"
+            },
+            "TacheResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "due_date": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "is_overdue": {
+                        "type": "boolean"
+                    },
+                    "is_completed": {
+                        "type": "boolean"
+                    },
+                    "created_by": {
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    },
+                    "creator": {
+                        "description": "Relations",
+                        "$ref": "#/components/schemas/MembreResource"
+                    },
+                    "assigned_members": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MembreResource"
+                        }
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "due_date",
+                    "status",
+                    "is_overdue",
+                    "is_completed",
+                    "created_by",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "TacheResource"
+            },
+            "UpdateEquipeRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 255
+                    }
+                },
+                "required": [
+                    "name"
+                ],
+                "title": "UpdateEquipeRequest"
+            },
+            "UpdateMembreRequest": {
+                "type": "object",
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "manager",
+                            "developer",
+                            "designer",
+                            "tester"
+                        ]
+                    },
+                    "team_id": {
+                        "type": "number"
+                    },
+                    "joined_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "password": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 8
+                    }
+                },
+                "title": "UpdateMembreRequest"
+            },
+            "UpdateTacheRequest": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "description": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "due_date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "todo",
+                            "in_progress",
+                            "done"
+                        ]
+                    },
+                    "created_by": {
+                        "type": "integer"
+                    },
+                    "assigned_members": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "title": "UpdateTacheRequest"
+            }
+        },
+        "responses": {
+            "ValidationException": {
+                "description": "Validation error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Errors overview."
+                                },
+                                "errors": {
+                                    "type": "object",
+                                    "description": "A detailed description of each field that failed validation.",
+                                    "additionalProperties": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "required": [
+                                "message",
+                                "errors"
+                            ]
+                        }
+                    }
+                }
+            },
+            "AuthenticationException": {
+                "description": "Unauthenticated",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Error overview."
+                                }
+                            },
+                            "required": [
+                                "message"
+                            ]
+                        }
+                    }
+                }
+            },
+            "ModelNotFoundException": {
+                "description": "Not found",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Error overview."
+                                }
+                            },
+                            "required": [
+                                "message"
+                            ]
+                        }
+                    }
+                }
+            },
+            "AuthorizationException": {
+                "description": "Authorization error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Error overview."
+                                }
+                            },
+                            "required": [
+                                "message"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

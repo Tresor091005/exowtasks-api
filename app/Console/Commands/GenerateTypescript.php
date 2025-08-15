@@ -3,93 +3,41 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Dedoc\Scramble\Scramble;
 use App\Services\OpenAPIToTypeScript;
-use Illuminate\Support\Facades\Artisan;
 
 class GenerateTypescript extends Command
 {
+    protected $dir_path;
+
     protected $signature = 'typescript:generate
-                            {--watch : Surveiller les changements}
-                            {--output=public/js/types/api.ts : Fichier de sortie}';
+                            {--output=public/TypescriptTypes : Dossier de sortie}';
 
     protected $description = 'Génère les types TypeScript depuis OpenAPI';
 
     public function handle()
     {
-        if ($this->option('watch')) {
-            $this->watchAndGenerate();
-        } else {
-            $this->generateOnce();
-        }
-    }
-
-    private function generateOnce()
-    {
+        $this->dir_path = $this->option('output');
+        
         $this->info('🔄 Génération des types TypeScript...');
 
         try {
-            // Générer le JSON OpenAPI depuis Scramble
-            $jsonPath = public_path('api.json');
-            Artisan::call('scramble:export', ['--path' => $jsonPath]);
+            $generator = new OpenAPIToTypeScript();
 
-            // Générer les types TypeScript
-            $generator = new OpenAPIToTypeScript($jsonPath);
-            $outputPath = $this->option('output');
+            $typescriptPath = "{$this->dir_path}/api-types.ts";
+            $readmePath = "{$this->dir_path}/README.md";
 
-            $generator->saveToFile($outputPath);
+            $generator->saveToFile($typescriptPath);
+            $this->info("✅ Types générés : {$typescriptPath}");
 
-            $this->info("✅ Types générés : {$outputPath}");
+            $generator->generateSummary($readmePath);
+            $this->info("✅ Fichier de résumé généré : {$readmePath}");
+
+            $this->info("✅ Génération terminée avec succès!");
+            return 0;
 
         } catch (\Exception $e) {
             $this->error("❌ Erreur : " . $e->getMessage());
             return 1;
-        }
-    }
-
-    private function watchAndGenerate()
-    {
-        $this->info('👀 Surveillance des changements activée...');
-
-        $lastModified = 0;
-        $watchPaths = [
-            app_path('Http/Controllers'),
-            app_path('Http/Requests'),
-            app_path('Http/Resources'),
-            app_path('Models'),
-        ];
-
-        while (true) {
-            $currentModified = $this->getLastModifiedTime($watchPaths);
-
-            if ($currentModified > $lastModified) {
-                $this->info('🔄 Changements détectés, régénération...');
-                $this->generateOnce();
-                $lastModified = $currentModified;
-            }
-
-            sleep(2); // Vérifier toutes les 2 secondes
-        }
-    }
-
-    private function getLastModifiedTime(array $paths): int
-    {
-        $lastModified = 0;
-
-        foreach ($paths as $path) {
-            if (is_dir($path)) {
-                $iterator = new \RecursiveIteratorIterator(
-                    new \RecursiveDirectoryIterator($path)
-                );
-
-                foreach ($iterator as $file) {
-                    if ($file->isFile() && $file->getExtension() === 'php') {
-                        $lastModified = max($lastModified, $file->getMTime());
-                    }
-                }
-            }
-        }
-
-        return $lastModified;
+        } 
     }
 }

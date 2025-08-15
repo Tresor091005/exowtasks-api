@@ -4,13 +4,14 @@ namespace App\Services;
 
 class OpenAPIToTypeScript
 {
+    private $url;
     private $apiSpec;
     private $generatedTypes = [];
 
-    public function __construct($jsonFile)
+    public function __construct()
     {
-        echo $jsonFile;
-        $jsonContent = file_get_contents($jsonFile);
+        $this->url = env('APP_URL') . "/docs/api.json";
+        $jsonContent = file_get_contents($this->url);
         $this->apiSpec = json_decode($jsonContent, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
@@ -18,7 +19,7 @@ class OpenAPIToTypeScript
         }
     }
 
-    public function generateTypeScript()
+    private function generateTypeScript()
     {
         $output = "// Types générés automatiquement depuis l'API OpenAPI\n";
         $output .= "// Ne pas modifier manuellement\n\n";
@@ -36,7 +37,7 @@ class OpenAPIToTypeScript
         $output .= $this->generateEndpointInterfaces();
 
         // Générer les types utilitaires
-        $output .= $this->generateUtilityTypes();
+        // $output .= $this->generateUtilityTypes();
 
         return $output;
     }
@@ -335,22 +336,7 @@ class OpenAPIToTypeScript
         return $output;
     }
 
-    public function saveToFile($filename)
-    {
-        $content = $this->generateTypeScript();
-        is_dir(dirname($filename)) || mkdir(dirname($filename), 0755, true);
-        file_put_contents($filename, $content);
-        echo "Fichier TypeScript généré : {$filename}\n";
-
-        // Statistiques
-        $lineCount = substr_count($content, "\n");
-        $interfaceCount = substr_count($content, "export interface");
-        echo "📊 Statistiques:\n";
-        echo "  - {$lineCount} lignes générées\n";
-        echo "  - {$interfaceCount} interfaces créées\n";
-    }
-
-    public function generateSummary()
+    public function generateSummary($filename)
     {
         $summary = "# Résumé des endpoints générés\n\n";
 
@@ -376,6 +362,21 @@ class OpenAPIToTypeScript
             }
         }
 
-        return $summary;
+        file_put_contents($filename, $summary);
+    }
+
+    public function saveToFile($filename)
+    {
+        // Générer le fichier TypeScript
+        $content = $this->generateTypeScript();
+        is_dir(dirname($filename)) || mkdir(dirname($filename), 0755, true);
+        file_put_contents($filename, $content);
+
+        // Statistiques
+        $lineCount = substr_count($content, "\n");
+        $interfaceCount = substr_count($content, "export interface");
+        echo "📊 Statistiques:\n";
+        echo "  - {$lineCount} lignes générées\n";
+        echo "  - {$interfaceCount} interfaces créées\n";
     }
 }

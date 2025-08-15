@@ -181,10 +181,7 @@ export interface PUT_TEAMS_TEAM_ERROR_422 extends ApiErrorResponse {
 }
 
 export interface DELETE_TEAMS_TEAM_ERROR_500 extends ApiErrorResponse {
-  errors: {
-    d: string;
-    tag: any[];
-  };
+  errors: string;
 }
 
 export interface DELETE_TEAMS_TEAM_SUCCESS_RESPONSE extends ApiSuccessResponse {
@@ -334,13 +331,4 @@ export interface DELETE_TASKS_TASK_UNASSIGN_ERROR_401 extends ApiErrorResponse {
 export interface DELETE_TASKS_TASK_UNASSIGN_ERROR_422 extends ApiErrorResponse {
   errors: Record<string, string[]>;
 }
-
-// Types utilitaires
-export type ApiResponse<TSuccess, TError = ApiErrorResponse> = TSuccess | TError;
-
-export type ExtractApiData<T> = T extends { data: infer D } ? D : never;
-
-export type PathParams = Record<string, string | number>;
-
-export type QueryParams = Record<string, any>;
 

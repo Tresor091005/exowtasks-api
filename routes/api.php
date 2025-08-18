@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\V1\AuthController;
 // Version 1 de l'API
 Route::prefix('v1')->group(function () {
 
+    Route::get('teamsA', [EquipeController::class, 'testRequetes']);
+
     // Authentification
     Route::prefix('auth')->group(function () {
         Route::post('login', [AuthController::class, 'login']);

@@ -21,6 +21,12 @@
 - ✅ 200: `GET_AUTH_USER_SUCCESS_RESPONSE`
 - ❌ 401: `GET_AUTH_USER_ERROR_401`
 
+## GET_TEAMSA
+**Endpoint:** `get /teamsA`
+**Description:** Non définie
+**Réponses:**
+- ✅ 200: `GET_TEAMSA_SUCCESS_RESPONSE`
+
 ## GET_TEAMS
 **Endpoint:** `get /teams`
 **Description:** Affiche la liste des équipes

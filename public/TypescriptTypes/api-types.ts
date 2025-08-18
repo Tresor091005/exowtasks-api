@@ -138,6 +138,9 @@ export interface GET_AUTH_USER_SUCCESS_RESPONSE extends ApiSuccessResponse {
 export interface GET_AUTH_USER_ERROR_401 extends ApiErrorResponse {
 }
 
+export interface GET_TEAMSA_SUCCESS_RESPONSE extends ApiSuccessResponse {
+}
+
 export interface GET_TEAMS_SUCCESS_RESPONSE extends ApiSuccessResponse {
   data: EquipeResource[];
 }

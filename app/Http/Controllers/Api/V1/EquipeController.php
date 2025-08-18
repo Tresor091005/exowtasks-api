@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Data\V1\EquipeData;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\V1\StoreEquipeRequest;
 use App\Http\Requests\V1\UpdateEquipeRequest;
@@ -13,6 +14,22 @@ use Illuminate\Support\Facades\DB;
 
 class EquipeController extends BaseController
 {
+    public function testRequetes(Request $request)
+    {
+        $query = Equipe::query()->with('membres');
+
+        $teams = $query->get();
+
+        return $this->successResponse(
+            $teams
+        );
+
+        return $this->successResponse(
+            ['collect' => EquipeData::collect($teams)->toArray(), 'item' => EquipeData::from($teams[0])->toJson()],
+            
+        );
+    }
+
     /**
      * Affiche la liste des équipes
      */
@@ -25,7 +42,7 @@ class EquipeController extends BaseController
             $query->where('name', 'like', '%' . $request->name . '%');
         }
 
-        $teams = $query->get();
+        $teams = $query->paginate(10);
 
         return $this->successResponse(
             EquipeResource::collection($teams),
